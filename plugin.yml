@@ -1,0 +1,16 @@
+name: Vault
+description: Export secrets from vault as environment variables.
+author: https://adabay.rocks
+configuration:
+  properties:
+    secrets:
+      type: array
+    secret_path:
+      type: string
+    secret_key:
+      type: string
+    exported_env_variable_name:
+      type: string
+  required:
+    - server_address
+    - token_file_location
