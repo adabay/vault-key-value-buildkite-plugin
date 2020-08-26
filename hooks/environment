@@ -1,6 +1,4 @@
-#!/bin/bash
-
-set -eo pipefail
+#!/bin/zsh --login
 
 export VAULT_TOKEN=$(cat $VAULT_TOKEN_FILE_PATH)
 
