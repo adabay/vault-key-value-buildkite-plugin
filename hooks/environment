@@ -1,28 +1,28 @@
-#!/bin/zsh --login
+#!/bin/bash
+
+set -eo pipefail
 
 export VAULT_TOKEN=$(cat $VAULT_TOKEN_FILE_PATH)
-
-env
 
 secret_paths=()
 secret_keys=()
 exported_env_variable_names=()
 
 while IFS='=' read -r secret_path _ ; do
-  if [[ $secret_path =~ ^(BUILDKITE_PLUGIN_VAULT_SECRETS_[0-9]+_SECRET_PATH$) ]]; then
+  if [[ $secret_path =~ ^(BUILDKITE_PLUGIN_BUILDKITE_PLUGIN_VAULT_GIT_SECRETS_[0-9]+_SECRET_PATH$) ]]; then
     MULTIPLE_SECRETS="true"
     secret_paths+=("${!secret_path}")
   fi
 done < <(env | sort)
 
 while IFS='=' read -r secret_key _ ; do
-  if [[ $secret_key =~ ^(BUILDKITE_PLUGIN_VAULT_SECRETS_[0-9]+_SECRET_KEY$) ]]; then
+  if [[ $secret_key =~ ^(BUILDKITE_PLUGIN_BUILDKITE_PLUGIN_VAULT_GIT_SECRETS_[0-9]+_SECRET_KEY$) ]]; then
     secret_keys+=("${!secret_key}")
   fi
 done < <(env | sort)
 
 while IFS='=' read -r exported_env_variable_name _ ; do
-  if [[ $exported_env_variable_name =~ ^(BUILDKITE_PLUGIN_VAULT_SECRETS_[0-9]+_EXPORTED_ENV_VARIABLE_NAME$) ]]; then
+  if [[ $exported_env_variable_name =~ ^(BUILDKITE_PLUGIN_BUILDKITE_PLUGIN_VAULT_GIT_SECRETS_[0-9]+_EXPORTED_ENV_VARIABLE_NAME$) ]]; then
     exported_env_variable_names+=("${!exported_env_variable_name}")
   fi
 done < <(env | sort)
@@ -32,15 +32,15 @@ if [[ "${MULTIPLE_SECRETS}" == "true" ]]; then
 
     for secret_path in "${secret_paths[@]}"
     do
-        secret_path_env_var="BUILDKITE_PLUGIN_VAULT_SECRETS_${index}_SECRET_PATH"
-        secret_key_env_var="BUILDKITE_PLUGIN_VAULT_SECRETS_${index}_SECRET_KEY"
-        exported_env_variable_name_env_var="BUILDKITE_PLUGIN_VAULT_SECRETS_${index}_EXPORTED_ENV_VARIABLE_NAME"
+        secret_path_env_var="BUILDKITE_PLUGIN_BUILDKITE_PLUGIN_VAULT_GIT_SECRETS_${index}_SECRET_PATH"
+        secret_key_env_var="BUILDKITE_PLUGIN_BUILDKITE_PLUGIN_VAULT_GIT_SECRETS_${index}_SECRET_KEY"
+        exported_env_variable_name_env_var="BUILDKITE_PLUGIN_BUILDKITE_PLUGIN_VAULT_GIT_SECRETS_${index}_EXPORTED_ENV_VARIABLE_NAME"
 
         secret_path="${!secret_path_env_var}"
         secret_key="${!secret_key_env_var}"
         exported_env_variable_name="${!exported_env_variable_name_env_var}"
 
-        echo "--- Exporting value \"$secret_key\" from secret \"$secret_path\" at vault server \"$BUILDKITE_PLUGIN_VAULT_SERVER_ADDRESS\" to environment variable named \"$exported_env_variable_name\""
+        echo "--- Exporting value \"$secret_key\" from secret \"$secret_path\" at vault server \"$VAULT_ADDR\" to environment variable named \"$exported_env_variable_name\""
 
         secret_value="$(vault kv get -field=$secret_key $secret_path)"
         eval export $exported_env_variable_name=\"\$secret_value\"
@@ -48,10 +48,10 @@ if [[ "${MULTIPLE_SECRETS}" == "true" ]]; then
         ((index+=1))
     done
 else
-    echo "--- Exporting value \"$BUILDKITE_PLUGIN_VAULT_SECRET_KEY\" from secret \"$BUILDKITE_PLUGIN_VAULT_SECRET_PATH\" at vault server \"$BUILDKITE_PLUGIN_VAULT_SERVER_ADDRESS\" to environment variable named \"$BUILDKITE_PLUGIN_VAULT_EXPORTED_ENV_VARIABLE_NAME\""
+    echo "--- Exporting value \"$BUILDKITE_PLUGIN_BUILDKITE_PLUGIN_VAULT_GIT_SECRET_KEY\" from secret \"$BUILDKITE_PLUGIN_BUILDKITE_PLUGIN_VAULT_GIT_SECRET_PATH\" at vault server \"$VAULT_ADDR\" to environment variable named \"$BUILDKITE_PLUGIN_BUILDKITE_PLUGIN_VAULT_GIT_EXPORTED_ENV_VARIABLE_NAME\""
 
-    exported_env_variable_name=${BUILDKITE_PLUGIN_VAULT_EXPORTED_ENV_VARIABLE_NAME}
+    exported_env_variable_name=${BUILDKITE_PLUGIN_BUILDKITE_PLUGIN_VAULT_GIT_EXPORTED_ENV_VARIABLE_NAME}
 
-    secret_value="$(vault kv get -field=$BUILDKITE_PLUGIN_VAULT_SECRET_KEY $BUILDKITE_PLUGIN_VAULT_SECRET_PATH)"
+    secret_value="$(vault kv get -field=$BUILDKITE_PLUGIN_BUILDKITE_PLUGIN_VAULT_GIT_SECRET_KEY $BUILDKITE_PLUGIN_BUILDKITE_PLUGIN_VAULT_GIT_SECRET_PATH)"
     eval export $exported_env_variable_name=\"\$secret_value\"
 fi
