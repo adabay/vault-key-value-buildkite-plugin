@@ -11,6 +11,3 @@ configuration:
       type: string
     exported_env_variable_name:
       type: string
-  required:
-    - server_address
-    - token_file_location
