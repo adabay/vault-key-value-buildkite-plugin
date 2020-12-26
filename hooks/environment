@@ -2,10 +2,6 @@
 
 set -eo pipefail
 
-env
-
-exit 0
-
 export VAULT_TOKEN=$(cat $VAULT_TOKEN_FILE_PATH)
 
 secret_paths=()
@@ -52,7 +48,7 @@ if [[ "${MULTIPLE_SECRETS}" == "true" ]]; then
         ((index+=1))
     done
 else
-    echo "--- Exporting value \"$BUILDKITE_PLUGIN_VAULT_SECRET_KEY\" from secret \"$BUILDKITE_PLUGIN_VAULT_SECRET_PATH\" at vault server \"$VAULT_ADDR\" to environment variable named \"$BUILDKITE_PLUGIN_VAULT_EXPORTED_ENV_VARIABLE_NAME\""
+    echo "Exporting value \"$BUILDKITE_PLUGIN_VAULT_SECRET_KEY\" from secret \"$BUILDKITE_PLUGIN_VAULT_SECRET_PATH\" at vault server \"$VAULT_ADDR\" to environment variable named \"$BUILDKITE_PLUGIN_VAULT_EXPORTED_ENV_VARIABLE_NAME\""
 
     exported_env_variable_name=${BUILDKITE_PLUGIN_VAULT_EXPORTED_ENV_VARIABLE_NAME}
 
