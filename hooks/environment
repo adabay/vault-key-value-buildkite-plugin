@@ -2,6 +2,8 @@
 
 set -eo pipefail
 
+env
+
 export VAULT_TOKEN=$(cat $VAULT_TOKEN_FILE_PATH)
 
 secret_paths=()
