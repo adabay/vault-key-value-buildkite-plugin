@@ -12,7 +12,7 @@ Secrets have to be specified by their path and their key.
 To authorize the access to Vault, this plugin provides 2 methods:
 * Use a preexisting token environment variable (`VAULT_TOKEN`). This could be injected by an agent environment hook for example.
 * Use a token that was written to a file. This is the appropriate method to authorize if you use the Vault Agent's auto-auth method to keep a valid token on the build agent.
-To use this method, you have to specify the path to the token file using the plugin parameter `token_file_path` or using the environment variable `BUILDKITE_PLUGIN_VAULT_TOKEN_FILE_PATH`.
+To use this method, you have to specify the path to the token file using the plugin parameter `token_file_path` or using the environment variable `BUILDKITE_PLUGIN_VAULT_KEY_VALUE_TOKEN_FILE_PATH`.
 
 ## Example
 
@@ -46,6 +46,10 @@ steps:
 
 ## Configuration
 
+### `token_file_path` (string)
+
+Use this parameter to specify the path to the file where the Vault Agent writes the token to. If not specified, the preexisting environment variable `VAULT_TOKEN` is used to authorize requests to Vault.
+
 ### `secrets` (array)
 
 If you want to export multiple secrets, you can use this array. Each entry in this array has to have the configuration properties that are listed below.
@@ -67,5 +71,5 @@ With this parameter you can define the name of the environment variable that you
 To run the linter:
 
 ```shell
-docker run -it --rm -v "${PWD}:/plugin:ro" buildkite/plugin-linter --id adabay/vault
+docker run -it --rm -v "${PWD}:/plugin:ro" buildkite/plugin-linter --id adabay/vault-key-value
 ```

@@ -1,0 +1,3 @@
+steps:
+  - label: "Linting"
+    command: 'docker run -it --rm -v "${PWD}:/plugin:ro" buildkite/plugin-linter --id adabay/vault-key-value'

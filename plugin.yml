@@ -5,6 +5,8 @@ configuration:
   properties:
     secrets:
       type: array
+    token_file_path:
+      type: string
     secret_path:
       type: string
     secret_key:

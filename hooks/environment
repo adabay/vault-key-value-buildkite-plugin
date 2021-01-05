@@ -2,7 +2,11 @@
 
 set -eo pipefail
 
-export VAULT_TOKEN=$(cat $VAULT_TOKEN_FILE_PATH)
+if [[ -z "${BUILDKITE_PLUGIN_VAULT_KEY_VALUE_TOKEN_FILE_PATH}" ]]; then
+  echo "Using preexisting token from environment variable \"VAULT_TOKEN\""
+else
+  export VAULT_TOKEN="$(cat $BUILDKITE_PLUGIN_VAULT_KEY_VALUE_TOKEN_FILE_PATH)"
+fi
 
 secret_paths=()
 secret_keys=()
