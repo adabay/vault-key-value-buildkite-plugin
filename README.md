@@ -14,6 +14,8 @@ To authorize the access to Vault, this plugin provides 2 methods:
 * Use a token that was written to a file. This is the appropriate method to authorize if you use the Vault Agent's auto-auth method to keep a valid token on the build agent.
 To use this method, you have to specify the path to the token file using the plugin parameter `token_file_path` or using the environment variable `BUILDKITE_PLUGIN_VAULT_KEY_VALUE_TOKEN_FILE_PATH`.
 
+In a pre-exit hook, this plugin also removes the exported environment variables, including `VAULT_TOKEN`.
+
 ## Example
 
 ### Single secret example
@@ -22,7 +24,7 @@ To use this method, you have to specify the path to the token file using the plu
 steps:
   - command: 'curl -H "Authorization: Bearer $API_ACCESS_TOKEN" https://api.example.com'
     plugins:
-      - adabay/vault-key-value#v0.9.0:
+      - adabay/vault-key-value#v0.9.1:
           secret_path: "static/api_access_token"
           secret_key: "token"
           exported_env_variable_name: "API_ACCESS_TOKEN"
@@ -34,7 +36,7 @@ steps:
 steps:
   - command: 'echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin'
     plugins:
-      - adabay/vault-key-value#v0.9.0:
+      - adabay/vault-key-value#v0.9.1:
           secrets:
           - secret_path: "static/docker/registry1"
             secret_key: "username"
