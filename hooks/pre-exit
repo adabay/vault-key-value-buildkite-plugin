@@ -2,6 +2,7 @@
 
 set -eo pipefail
 
+echo "Unsetting env variable VAULT_TOKEN"
 unset VAULT_TOKEN
 
 exported_env_variable_names=()
