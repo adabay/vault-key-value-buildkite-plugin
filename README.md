@@ -2,7 +2,7 @@
 
 |Linting|Tests|
 |---|---|
-|-|-|
+|[![Build status](https://badge.buildkite.com/4be7fff4d9d3b4178df5bd1cc18bf8f78d2d7c86f60554ea73.svg)](https://buildkite.com/adabay/internal-vault-key-value-buildkite-plugin-linting)|-|
 
 This plugin enables pipelines to use secrets from a Hashicorp Vault instance (Key/Value Secrets Engine) as environment variables.
 
