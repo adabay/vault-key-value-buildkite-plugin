@@ -1,6 +1,7 @@
 name: Vault Key/Value
 description: Export secrets from Hashicorp Vault (Key/Value Secret Engine) as environment variables.
 author: https://adabay.rocks
+requirements: []
 configuration:
   properties:
     secrets:
