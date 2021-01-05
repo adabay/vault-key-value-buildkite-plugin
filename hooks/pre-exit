@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -eo pipefail
+
+unset VAULT_TOKEN
+
+exported_env_variable_names=()
+
+while IFS='=' read -r exported_env_variable_name _ ; do
+  if [[ $exported_env_variable_name =~ ^(BUILDKITE_PLUGIN_VAULT_KEY_VALUE_SECRETS_[0-9]+_EXPORTED_ENV_VARIABLE_NAME$) ]]; then
+    MULTIPLE_SECRETS="true"
+    exported_env_variable_names+=("${!exported_env_variable_name}")
+  fi
+done < <(env | sort)
+
+if [[ "${MULTIPLE_SECRETS}" == "true" ]]; then
+    index=0
+
+    for exported_env_variable_name in "${exported_env_variable_names[@]}"
+    do
+        eval unset $exported_env_variable_name
+
+        ((index+=1))
+    done
+else
+    exported_env_variable_name=${BUILDKITE_PLUGIN_VAULT_KEY_VALUE_EXPORTED_ENV_VARIABLE_NAME}
+
+    eval unset $exported_env_variable_name
+fi
