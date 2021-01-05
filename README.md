@@ -24,7 +24,7 @@ In a pre-exit hook, this plugin also removes the exported environment variables,
 steps:
   - command: 'curl -H "Authorization: Bearer $API_ACCESS_TOKEN" https://api.example.com'
     plugins:
-      - adabay/vault-key-value#v0.9.1:
+      - adabay/vault-key-value#v0.9.2:
           secret_path: "static/api_access_token"
           secret_key: "token"
           exported_env_variable_name: "API_ACCESS_TOKEN"
@@ -36,7 +36,7 @@ steps:
 steps:
   - command: 'echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin'
     plugins:
-      - adabay/vault-key-value#v0.9.1:
+      - adabay/vault-key-value#v0.9.2:
           secrets:
           - secret_path: "static/docker/registry1"
             secret_key: "username"
