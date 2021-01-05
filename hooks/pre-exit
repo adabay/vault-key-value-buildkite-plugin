@@ -18,6 +18,7 @@ if [[ "${MULTIPLE_SECRETS}" == "true" ]]; then
 
     for exported_env_variable_name in "${exported_env_variable_names[@]}"
     do
+        echo "Unsetting env variable $exported_env_variable_name"
         eval unset $exported_env_variable_name
 
         ((index+=1))
@@ -25,5 +26,6 @@ if [[ "${MULTIPLE_SECRETS}" == "true" ]]; then
 else
     exported_env_variable_name=${BUILDKITE_PLUGIN_VAULT_KEY_VALUE_EXPORTED_ENV_VARIABLE_NAME}
 
+    echo "Unsetting env variable $exported_env_variable_name"
     eval unset $exported_env_variable_name
 fi
